@@ -1,4 +1,6 @@
 # TOC
+gitlab->github
+
 # 量子計算
 - A fault-tolerant one-way quantum computer, R. Raussendorf (2008)
 - Introduction to Quantum Noise, Measurement and Ampliﬁcation, A.A. Clerk, (2010) arXiv:0810.4729v2
@@ -19,10 +21,8 @@
 - Observing a quantum Maxwell demon at work, B. Huard, (2017) arXiv: 1702.05161
 - Demonstration of universal parametric entangling gates on a multi-qubit lattice, Rigetti (2017), arXiv:1706.06570v3
     * Rigetti 8ビット    
-      ![image.png](/attachment/657a9503c2fbd0d355a077dd)
 - Unsupervised machine learning on a hybrid quantum computer, Rigetti (2017) arXiv: 1712.05771 
     * Rigetti 19量子ビット  
-      ![image.png](/attachment/657a9647c2fbd0d355a0793a)
 ## QECデモ
 - Demonstration of weight-four parity measurements in the surface code architecture, Maika Takita (2016) arXiv: 1605.01351
     * 4体測定 
@@ -32,7 +32,6 @@
 - Logical performance of 9 qubit compass codes in ion traps with crosstalk errors, Kenneth R. Brown, Duke University (2019), arXiv:1910.08495v2
     * Bacon-Shorの実装シミュレーション。イオントラップを念頭に。
 - Repeated quantum error detection in a surface code, Christian Kraglund Andersen, Andreas Wallraff (2019), arXiv:1912.09410v1, \[Nature Physics volume 16, 875-880 (2020)\]  
-    ![image.png](/attachment/657aa58ec2fbd0d355a08b7b)
 # コヒーレンス
 - Mitigation of quasiparticle loss in superconducting qubits by phonon scattering, QuTech, Delft  
 - Improving the Coherence Time of Superconducting Coplanar Resonators, Martinis, (2009) arXiv:0909.0547v1 
@@ -53,7 +52,6 @@
     * 量子ビット間や共振器との結合の方法をキャパシタンス行列から簡便に計算する方法
 - Granular aluminum: A superconducting material for high impedance quantum circuits, Ioan M. Pop (2018), arXiv:1809.10646v1 \[Nature Materials **18**,816–819 (2019)\]
 - Implementation of a transmon qubit using superconducting granular aluminum, Ioan M. Pop, KIT (2019), arXiv:1911.02333v2 \[Phys. Rev. X 10, 031032 (2020)\]    
-    ![image.png](/attachment/657aa4e5c2fbd0d355a089a1)
 - Superconducting Qubits: Current State of Play, William D. Oliver, MIT (2020), arXiv:1905.13641v3
     * 解説論文
 - The superconducting quasicharge qubit, Vladimir E. Manucharya, Maryland (2021), arXiv:1907.02937v2
