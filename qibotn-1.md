@@ -1,11 +1,6 @@
 # QiboTensornetwork ‚ğg‚¢‚½‚¢
 
-~c”O‚È‚ª‚çPython 3.11ˆÈã‚Å‚Íg‚¦‚È‚¢ƒ‰ƒCƒuƒ‰ƒŠ‚ğ—p‚¢‚Ä‚¢‚é‚½‚ßA3.10.5‚ÌŠÂ‹«‚ğì‚è’¼‚·•K—v‚ª‚ ‚è‚Ü‚·B~ (‚»‚Ì•K—v‚Í‚ ‚è‚Ü‚¹‚ñ‚Å‚µ‚½) ‰º‚Ì•û–@‚ÅƒCƒ“ƒXƒg[ƒ‹‚·‚é‚Æ `qibo v0.0.1`‚ªƒCƒ“ƒXƒg[ƒ‹‚³‚ê‚Ä‚µ‚Ü‚¢‚Ü‚µ‚½B‚±‚Ìƒo[ƒWƒ‡ƒ“‚ÍŒÃ‚­A`qibotn` ƒoƒbƒNƒGƒ“ƒh‚Ì“Ç‚İ‚İ‚Ì‚Æ‚±‚ë‚ÅƒGƒ‰[‚ğ¶‚¶‚Ä‚µ‚Ü‚¢‚Ü‚·B
-```
-pipenv install qubotn
-```
-
-GitHub‚©‚çÅV”Å‚ğƒ_ƒEƒ“ƒ[ƒh‚µ‚ÄƒhƒLƒ…ƒƒ“ƒg‚Ìw¦‚Ì’Ê‚è‚ÉƒCƒ“ƒXƒg[ƒ‹‚µ‚Ü‚·B¡“x‚Í `qibo 0.0.2`‚ªƒCƒ“ƒXƒg[ƒ‹‚³‚ê‚Ü‚µ‚½B
+GitHub‚©‚çÅV”Å‚ğƒNƒ[ƒ“‚µ‚ÄƒhƒLƒ…ƒƒ“ƒg‚Ìw¦‚Ì’Ê‚è‚ÉƒCƒ“ƒXƒg[ƒ‹‚µ‚Ü‚·B`qibo 0.0.2`‚ªƒCƒ“ƒXƒg[ƒ‹‚³‚ê‚Ü‚µ‚½B
 ```
 $ git clone https://github.com/qiboteam/qibotn.git qibotn
 $ cd qibotn
@@ -18,10 +13,18 @@ In [2]: qibotn.__version__
 Out[2]: '0.0.2'
 ```
 
-“Á‚ÉNVIDIA‚Ìƒn[ƒhƒEƒFƒA‚ğ‚Á‚Ä‚¢‚é–ó‚Å‚Í‚È‚¢‚½‚ßAQuimb (quantum information many-body) [Link](https://quimb.readthedocs.io/en/latest/index.html)‚ğg‚¤‚±‚Æ‚É‚µ‚Ü‚·B
+ŒÂl‚Å‚ÍNVIDIA‚Ìƒn[ƒhƒEƒFƒA‚ğ‚Á‚Ä‚¢‚é–ó‚Å‚Í‚È‚¢‚½‚ßA[Quimb](https://quimb.readthedocs.io/en/latest/index.html) (quantum information many-body) ‚ğg‚¤‚±‚Æ‚É‚µ‚Ü‚·B
 ```
 pipenv install quimb
 ```
+
+## ¸”s
+
+pipenv ‚©‚çƒCƒ“ƒXƒg[ƒ‹‚·‚éê‡‚É‚ÍPython 3.11ˆÈã‚Å‚Íg‚¦‚È‚¢ƒ‰ƒCƒuƒ‰ƒŠ‚ğ—p‚¢‚Ä‚¢‚é‚½‚ßA3.10.5‚ÌŠÂ‹«‚ğì‚è’¼‚·•K—v‚ª‚ ‚è‚Ü‚·B‰º‚Ì•û–@‚ÅƒCƒ“ƒXƒg[ƒ‹‚·‚é‚Æ `qibo v0.0.1`‚ªƒCƒ“ƒXƒg[ƒ‹‚³‚ê‚Ä‚µ‚Ü‚¢‚Ü‚µ‚½B‚±‚Ìƒo[ƒWƒ‡ƒ“‚ÍŒÃ‚­A`qibo` ‚©‚ç `qibotn` ƒoƒbƒNƒGƒ“ƒh‚Ì“Ç‚İ‚İ‚Ì‚Æ‚±‚ë‚ÅƒGƒ‰[‚ğ¶‚¶‚Ä‚µ‚Ü‚¢‚Ü‚·B
+```
+$ pipenv install qubotn
+```
+
 
 # Hello QiboTensornetwork
 
@@ -58,7 +61,8 @@ print( result.state() )
 
 50—Êqƒrƒbƒg‚É‚·‚é‚Æ `RuntimeError: State does not fit in /CPU:0 memory.Please switch the execution device to a different one using qibo.set_device.` ‚Æ‚¢‚¤ƒGƒ‰[‚ªo‚Ä‚µ‚Ü‚¢‚Ü‚µ‚½B­‚µŠú‘ÒŠO‚ê‚Å‚·‚ª25—Êqƒrƒbƒg‚Å‚Í“®‚¢‚Ä‚¢‚Ü‚·B
 
-`qibotn.backends.quimb` ‚Ìƒ\[ƒXƒR[ƒh“à‚É‹LÚ‚ª‚ ‚é‚Ì‚Å‚·‚ªAQuimb ‚Å‚Í MPI•À—ñANCCLAŠú‘Ò’lŒvZ‚Íg‚¤‚±‚Æ‚ª‚Å‚«‚¸Anumpyƒx[ƒX‚ÌQuimb‚Ì‚İ‚ğg‚¤‚±‚Æ‚ª‚Å‚«‚Ü‚·B‚»‚Ìê‡‚É‚Íƒeƒ“ƒ\ƒ‹‚Ìk–ñ‚ğ‚Æ‚Á‚½ÅŒã‚Í `2^num_of_qubits x 16 byte` ‚Ìó‘ÔƒxƒNƒgƒ‹‚ª•K—v‚É‚È‚è‚Ü‚·B20ƒrƒbƒg‚Å16 MByteA30ƒrƒbƒg‚Å16 GByte‚Å‚·‚Ì‚ÅA50—Êqƒrƒbƒg‚Í–³—‚»‚¤‚Å‚·‚ËB
+`computation_settings` ‚ÍƒoƒbƒNƒGƒ“ƒh‚Ì“®ì‚ğw’è‚µ‚Ü‚·B`qibotn.backends.quimb` ‚Ìƒ\[ƒXƒR[ƒh“à‚É‹LÚ‚ª‚ ‚é‚Ì‚Å‚·‚ªAQuimb ‚Å‚Í MPI•À—ñA[NCCL](https://developer.nvidia.com/nccl) (NVIDIA Collective Communications Library)AŠú‘Ò’lŒvZ‚Íg‚¤‚±‚Æ‚ª‚Å‚«‚¸Anumpyƒx[ƒX‚ÌQuimb‚Ì‚İ‚ğg‚¤‚±‚Æ‚ª‚Å‚«‚Ü‚·B‚»‚Ìê‡‚É‚Íƒeƒ“ƒ\ƒ‹‚Ìk–ñ‚ğ‚Æ‚Á‚½ÅŒã‚Í `2^num_of_qubits x 16 byte` ‚Ìó‘ÔƒxƒNƒgƒ‹‚ª•K—v‚É‚È‚è‚Ü‚·B20ƒrƒbƒg‚Å16 MByteA30ƒrƒbƒg‚Å16 GByte‚Å‚·‚Ì‚ÅA50—Êqƒrƒbƒg‚Í–³—‚»‚¤‚Å‚·‚ËB–§ƒxƒNƒgƒ‹•\Œ»‚³‚¦‚µ‚È‚¯‚ê‚ÎGHZó‘Ô‚Ì•\Œ»‚Í‘å‚µ‚½‚±‚Æ‚È‚¢‚Í‚Ì‚Å‚·‚ªA‚±‚±‚ª‘«‚©‚¹‚É‚È‚Á‚Ä‚¢‚é‚æ‚¤‚Å‚·B
+
 ```
 q0 : „ŸH„Ÿo„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ
 q1 : „Ÿ„Ÿ„ŸX„Ÿo„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ
@@ -89,7 +93,9 @@ q24: „Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„
  0.        +0.j 0.70710678+0.j]
 ```
 
+
 # ƒŠƒ“ƒN
 
 - [Qibotn](https://github.com/qiboteam/qibotn)
 - [Quimb](https://quimb.readthedocs.io/en/latest/index.html) (quantum information many-body)
+- NVIDIA Collective Communications Library, [NCCL](https://developer.nvidia.com/nccl)
