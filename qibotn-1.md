@@ -100,6 +100,111 @@ q24: „Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„
  0.        +0.j 0.70710678+0.j]
 ```
 
+# ƒXƒsƒ“½‚Ì—ã‹Nó‘Ô“`”À
+
+“Á‚É‚â‚é‚±‚Æ‚à‚È‚¢‚Ì‚ÅA—Êqƒrƒbƒg‚ğƒXƒsƒ“‚ÆŒ©—§‚Ä‚Ä—ã‹N‚ğ“`”À‚³‚¹‚Ä‚İ‚Ü‚·B‘ŠŒİì—p‚ğ `H_int = ƒ°_<i,i+1> { X_i X_(i+1) + Y_i Y_(i+1) } / 2` ‚Æ‚µ‚ÄA1ŸŒ³ƒXƒsƒ“½‚Ì’†‰›‚ğ—ã‹N‚µ‚Ü‚·B’†‰›‚©‚ç‚Ì—ã‹N‚Ì“`”À‚Ì—lq‚ğŒ©‚Ä‚İ‚é‚±‚Æ‚É‚µ‚Ü‚·B‚±‚¤‚¢‚¤‘ŠŒİì—p‚Í‹ÇŠ“I‚Å‚©‚ÂŒ‹‡ŸŒ³‚ğ‘å‚«‚­‚·‚é‚±‚Æ‚ª‚È‚¢‚Ì‚ÅA‚¢‚¢—á‘è‚Æ‚È‚è‚Ü‚·B
+
+```
+import qibo
+import numpy
+import scipy.linalg
+import matplotlib.pylab as pl
+
+sp = numpy.array( [[ 0, 1 ], [ 0, 0 ]] )
+sm = sp.T
+sx = sp + sm; sz = sp @ sm - sm @ sp; sy = ( sz @ sx - sx @ sz ) / 2j
+
+def spin_propagation( number_of_qubits : int, number_of_rounds : int, Upropagator : numpy.ndarray ) -> list:
+
+    c = qibo.Circuit( number_of_qubits )
+    c.add( qibo.gates.H( number_of_qubits // 2 ))
+    for j in range( number_of_rounds ):
+        for i in range( 1, number_of_qubits, 2 ):
+            c.add( qibo.gates.Unitary( Upropagator, i - 1, i ))
+        for i in range( 2, number_of_qubits, 2 ):
+            c.add( qibo.gates.Unitary( Upropagator, i - 1, i ))
+    print( c.diagram() )
+
+    contr_axis          = [[ i for i in range( number_of_qubits ) if i != j ] for j in range( number_of_qubits )]
+    excited_state_index = 1
+
+    prob_tensor = c.execute().probabilities().reshape( (2,) * number_of_qubits )
+    excitation = [ numpy.sum( prob_tensor, axis = tuple( ax ))[ excited_state_index ]  for ax in contr_axis ]
+
+    return excitation
+
+dt           = 1/128
+Hinteraction = 0.5 * numpy.kron( sx, sx ) + 0.5 * numpy.kron( sy, sy )  # ( XX + YY ) / 2
+     # equivalent to numpy.kron( sp, sm ) +       numpy.kron( sm, sp )
+Upropagator  = scipy.linalg.expm( 1j * 2 * numpy.pi * Hinteraction * dt )
+
+number_of_qubits = 15
+number_of_rounds = 256
+
+packets = []
+for i in range( 0, number_of_rounds, 8 ):
+
+  excitation = spin_propagation( number_of_qubits, i, Upropagator )
+  packets.append( excitation )
+  #pl.plot( numpy.array( excitation ) - 0.1 * i )
+pl.pcolor( numpy.array( packets ))
+pl.savefig( '1.svg' )
+#pl.show()
+```
+
+2—Êqƒrƒbƒg‚ÌXX+YY‘ŠŒİì—p‚ğŒ‹‡‹­“x‚É‘Î‚µ‚Ä1/128‚¾‚¯ŠÔ”­“W‚³‚¹‚½ `U_propagator` ‚ğì‚è‚Ü‚·B—Êqƒrƒbƒg‚ÉŒİ‚¢ˆá‚¢‚É‚È‚é‚æ‚¤‚Éˆó‰Á‚µ‚ÄA`H_int` ‚ª‘SƒXƒsƒ“‚É‘Î‚µ‚Ä“¯‚Éˆó‰Á‚³‚ê‚éŠ´‚¶‚ğ—é–Øƒgƒƒbƒ^[•ª‰ğ‚É‚æ‚èÀŒ»‚µ‚Ü‚·(‰º}‚ğQÆBU‚ÍXX+YY‚ğ1/128‚¾‚¯ŠÔ”­“W‚·‚é‰‰Zq)B
+
+```
+q0 :  ------U------------------------
+q1 :  ------U----------------U-------
+q2 :  ----------U------------U-------
+q3 :  ----------U----------------U---
+q4 :  ------U--------------------U---
+q5 :  ------U----------------U-------
+q6 :  ----------U------------U-------
+q7 :  ----------U----------------U---
+q8 :  ------U--------------------U---
+q9 :  ------U----------------U-------
+q10:  --H-------U------------U-------
+q11:  ----------U----------------U---
+q12:  ------U--------------------U---
+q13:  ------U----------------U-------
+q14:  ----------U------------U-------
+q15:  ----------U----------------U---
+q16:  ------U--------------------U---
+q17:  ------U----------------U-------
+q18:  ----------U------------U-------
+q19:  ----------U----------------U---
+q20:  ---------------------------U---
+```
+
+`c.execute()`‚É‚æ‚è‰ñ˜H‚ªÀs‚³‚êA`.probabilities()`‚É‚æ‚è`2^number_of_qubits`ŸŒ³‚Ìè—L—¦‚ÌƒxƒNƒgƒ‹‚ª“¾‚ç‚ê‚Ü‚·B—Êqƒrƒbƒg‚²‚Æ‚Ìè—L—¦‚ğ“¾‚é‚½‚ß‚ÉA‚±‚ÌƒxƒNƒgƒ‹‚ğ `number_of_qubits` ŠK‚Ìƒeƒ“ƒ\ƒ‹‚É `reshape()` ‚µ‚Ä‚¨‚«‚Ü‚·B`prob_tensor[i0, i1, ..., i_(number_of_qubits-1)]` ‚Ìƒeƒ“ƒ\ƒ‹‚ÍA‹»–¡‚ª‚È‚¢¬•ª‚É‘Î‚µ‚Ä˜a‚ğ‚Æ‚é‚Æ‚»‚Ìü•ÓŠm—¦•ª•z‚ğ“¾‚Ü‚·BƒgƒŒ[ƒXƒAƒEƒg‚·‚×‚«ƒeƒ“ƒ\ƒ‹‚Ì‘« `contr_axis` ‚ğg‚Á‚ÄAŠe—Êqƒrƒbƒg‚Ìè—L—¦‚ğ“¾‚éƒvƒƒOƒ‰ƒ€‚Æ‚È‚Á‚Ä‚¢‚Ü‚·B
+
+## Quimb‚É‚æ‚éÀs (¸”s)
+
+‚±‚ÌƒvƒƒOƒ‰ƒ€‚ğÀs‚µ‚æ‚¤‚Æ‚µ‚½‚Æ‚±‚ëA`qibo.gates.Unitary` ‚ÉƒGƒ‰[‚ªo‚Ä‚µ‚Ü‚¢‚Ü‚µ‚½B‚Ç‚¤‚â‚ç Quimb ‚ÌÀs‚Í `quimb.tensor.circuit.Circuit.from_openqasm2_str()` ‚É—Š‚Á‚Ä‚¢‚é‚æ‚¤‚ÅAQASM‚Í`qibo.gates.Unitary` ‚â `qibo.gates.fSim` ‚È‚Ç‚ğƒTƒ|[ƒg‚µ‚Ä‚¢‚È‚¢‚ÆŒ¾‚í‚ê‚Ä‚µ‚Ü‚¢‚Ü‚·B2—ÊqƒrƒbƒgƒQ[ƒg‚Ì•\Œ»‚Æ‚µ‚ÄA‚©‚È‚è•nã‚Å‚·‚ËB
+
+```
+[Qibo 0.2.12|INFO|2024-10-xx xx:16:45]: Using qibotn (QuimbBackend) backend on /CPU:0
+[Qibo 0.2.12|ERROR|2024-10-xx xx:17:52]: Unitary is not supported by OpenQASM
+
+NotImplementedError: Unitary is not supported by OpenQASM
+```
+
+## numpy ƒoƒbƒNƒGƒ“ƒh‚É‚æ‚éÀs
+
+‘Ã‹¦‚µ‚Ä numpy ƒoƒbƒNƒGƒ“ƒh‚É‚æ‚èÀs‚µ‚Ä‚İ‚Ü‚·B
+```
+qibo.set_backend(backend = 'numpy')
+```
+
+```
+[Qibo 0.2.12|INFO|2024-10-xx xx:18:40]: Using numpy backend on /CPU:0
+```
+
+![](./qibotn-10.svg)
+
+‰¡²‚ÉƒXƒsƒ“½‚Ì”Ô†Ac²‚ÉŠÔƒXƒeƒbƒv € 8AF²‚Éè—L—¦‚ğ•\¦‚µ‚Ä‚¢‚Ü‚·BŠÔƒXƒeƒbƒv‚Í•Ï‰»‚ªŠÉ‚â‚©‚È‚Ì‚Å1/8’ö“x‚ÉŠÔˆø‚¢‚Ä•\¦‚µ‚Ä‚¢‚Ü‚·B’†‰›‚É—ã‹N‚³‚ê‚½ƒXƒsƒ“‚ªŠÔ”­“W‚É‚æ‚èüˆÍ‚ÉL‚ª‚Á‚Ä‚¢‚­‚Ì‚ª‚æ‚­‚í‚©‚è‚Ü‚·B
 
 # ƒŠƒ“ƒN
 
