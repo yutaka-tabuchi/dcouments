@@ -3,6 +3,9 @@
 - QiboTensornetwork を使いたい
     * 失敗
 - Hello QiboTensornetwork
+- スピン鎖の励起状態伝搬
+    * Quimbによる実行 (失敗)
+    * numpy バックエンドによる実行
 - リンク
 
 # QiboTensornetwork を使いたい
@@ -68,7 +71,7 @@ print( result.state() )
 
 50量子ビットにすると `RuntimeError: State does not fit in /CPU:0 memory.Please switch the execution device to a different one using qibo.set_device.` というエラーが出てしまいました。少し期待外れですが25量子ビットでは動いています。
 
-`computation_settings` はバックエンドの動作を指定します。`qibotn.backends.quimb` のソースコードを読めば分かるのですが、Quimb では MPI並列、[NCCL](https://developer.nvidia.com/nccl) (NVIDIA Collective Communications Library)、期待値計算は使うことができず、numpyベースのQuimbのみを使うことができます。その場合にはテンソルの縮約をとった最後は `2^num_of_qubits x 16 byte` の状態ベクトルが必要になります。20ビットで16 MByte、30ビットで16 GByteですので、50量子ビットは無理そうですね。密ベクトル表現さえしなければGHZ状態の表現は大したことないはのですが、ここが足かせになっているようです。
+`computation_settings` はバックエンドの動作を指定します。`qibotn.backends.quimb` のソースコードを読めば分かるのですが、Quimb では MPI並列、[NCCL](https://developer.nvidia.com/nccl) (NVIDIA Collective Communications Library)、期待値計算は使うことができず、numpyベースのQuimbのみを使うことができます。その場合にはテンソルの縮約をとった最後は `2^num_of_qubits x 16 byte` の状態ベクトルが必要になります。20ビットで16 MByte、30ビットで16 GByteですので、50量子ビットは無理そうですね。密ベクトル表現さえしなければGHZ状態の表現は大したことないのですが、ここが足かせになっているようです。
 
 ```
 q0 : ─H─o───────────────────────────────────────────────
@@ -138,18 +141,16 @@ Hinteraction = 0.5 * numpy.kron( sx, sx ) + 0.5 * numpy.kron( sy, sy )  # ( XX +
      # equivalent to numpy.kron( sp, sm ) +       numpy.kron( sm, sp )
 Upropagator  = scipy.linalg.expm( 1j * 2 * numpy.pi * Hinteraction * dt )
 
-number_of_qubits = 15
+number_of_qubits = 21
 number_of_rounds = 256
 
 packets = []
 for i in range( 0, number_of_rounds, 8 ):
-
   excitation = spin_propagation( number_of_qubits, i, Upropagator )
   packets.append( excitation )
-  #pl.plot( numpy.array( excitation ) - 0.1 * i )
+
 pl.pcolor( numpy.array( packets ))
-pl.savefig( '1.svg' )
-#pl.show()
+pl.savefig( 'qibotn-10.svg' )
 ```
 
 2量子ビットのXX+YY相互作用を結合強度に対して1/128だけ時間発展させた `U_propagator` を作ります。量子ビットに互い違いになるように印加して、`H_int` が全スピンに対して同時に印加される感じを鈴木トロッター分解により実現します(下図を参照。UはXX+YYを1/128だけ時間発展する演算子)。
@@ -180,9 +181,11 @@ q20:  ---------------------------U---
 
 `c.execute()`により回路が実行され、`.probabilities()`により`2^number_of_qubits`次元の占有率のベクトルが得られます。量子ビットごとの占有率を得るために、このベクトルを `number_of_qubits` 階のテンソルに `reshape()` しておきます。`prob_tensor[i0, i1, ..., i_(number_of_qubits-1)]` のテンソルは、興味がない成分に対して和をとるとその周辺確率分布を得ます。トレースアウトすべきテンソルの足 `contr_axis` を使って、各量子ビットの占有率を得るプログラムとなっています。
 
+回路を最初から作り直しながらスピン鎖の時間発展を追いかけるのではなく、縮約をとった密ベクトルを初期値にして `H_int` を時間発展させたほうが効率的だった反省しました。
+
 ## Quimbによる実行 (失敗)
 
-このプログラムを実行しようとしたところ、`qibo.gates.Unitary` にエラーが出てしまいました。どうやら Quimb の実行は `quimb.tensor.circuit.Circuit.from_openqasm2_str()` に頼っているようで、QASMは`qibo.gates.Unitary` や `qibo.gates.fSim` などをサポートしていないと言われてしまいます。2量子ビットゲートの表現として、かなり貧弱ですね。
+このプログラムを実行しようとしたところ、`qibo.gates.Unitary` にエラーが出てしまいました。どうやら Quimb の実行は `quimb.tensor.circuit.Circuit.from_openqasm2_str()` に頼っているようで、QASMは`qibo.gates.Unitary` や `qibo.gates.fSim` などをサポートしていないと言われてしまいます。2量子ビットゲートの表現として、かなり貧弱ですね。ネイティブゲートのシミュレーションに使おうと思ったので、がっかりです。
 
 ```
 [Qibo 0.2.12|INFO|2024-10-xx xx:16:45]: Using qibotn (QuimbBackend) backend on /CPU:0
@@ -205,6 +208,11 @@ qibo.set_backend(backend = 'numpy')
 ![](./qibotn-10.svg)
 
 横軸にスピン鎖の番号、縦軸に時間ステップ ÷ 8、色軸に占有率を表示しています。時間ステップは変化が緩やかなので1/8程度に間引いて表示しています。中央に励起されたスピンが時間発展により周囲に広がっていくのがよくわかります。
+
+## Quimbによる実行
+
+
+
 
 # リンク
 
