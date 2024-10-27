@@ -26,7 +26,7 @@ In [2]: qibotn.__version__
 Out[2]: '0.0.2'
 ```
 
-個人ではNVIDIAのハードウェアを持っているないため、[Quimb](https://quimb.readthedocs.io/en/latest/index.html) (quantum information many-body) を使うことにします。
+個人ではNVIDIAのハードウェアを持っていないため、[Quimb](https://quimb.readthedocs.io/en/latest/index.html) (quantum information many-body) を使うことにします。
 ```
 $ pipenv install quimb
 ```
