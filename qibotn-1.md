@@ -281,14 +281,14 @@ array([[1.+0.j, 0.+0.j, 0.+0.j, 0.+0.j],
 
 ### 微小iSWAP時間発展
 
-あとはiSwapが1回の場合と、位相反転で挟み込んだiSwapを用いてキャンセルした場合との中間状態を考えます。XX+YYをそれぞれZに寝かせるように干渉させ、最初と最後の位相の位相を調整すると次のような回路で任意のIdentity ～ iSwapを補完することができます。ここで x = 0.5 でiSwap、0.25でsqrt(iSwap)となります。
+あとはiSWAPが1回の場合と、位相反転で挟み込んだiSwapを用いてキャンセルした場合との中間状態を考えます。XX+YYをそれぞれZに寝かせるように干渉させ、最初と最後の位相の位相を調整すると次のような回路で任意のIdentity ～ iSwapを補完することができます。ここで x = 0.5 でiSwap、0.25でsqrt(iSwap)となります。
 ```
     -- sqrtY' --x - Uy(  x ) - Z - x - Z - sqrtY --
                 |                  |
     -- sqrtX  --x --Ux( -x )------ x ----- sqrtX'--
 ```
 
-上の回路のような iSwapを用いた`Upropagator` ( `H_interaction` の微小時間発展) の分解において、1量子ビットゲートの回転角を調べる手続き `find_tuning_angle()`を定義しておきます。また回路に `Upropagator` を実装する手続き `add_small_iSwap()` を記述しておきます。`RX`の回転角は `pi/2` を与えるとZ軸を-Y軸に倒すような回転のようです。
+上の回路のような iSWAPを用いた`Upropagator` ( `Hinteraction` の微小時間発展) の分解において、1量子ビットゲートの回転角を調べる手続き `find_tuning_angle()`を定義しておきます。また回路に `Upropagator` を実装する手続き `add_small_iSwap()` を記述しておきます。`RX`の回転角は `pi/2` を与えるとZ軸を-Y軸に倒すような回転のようです。
 ```
 def find_tuning_angle( Utarget : numpy.ndarray, Uisw : numpy.ndarray ) -> float:
 
@@ -333,7 +333,7 @@ def add_small_iSwap( circuit : qibo.Circuit, qubit_i : int, qubit_j : int, angle
     return circuit
 ```
 
-`Upropagator` と分解した回路を比較して簡単に確認をしておきます。最初の数行では、分解を行う手続き `find_tuning_angle()` に必要な iSwapゲートのユニタリ表現を生成しています。
+`Upropagator` と分解した回路を比較して簡単に確認をしておきます。最初の数行では、分解を行う手続き `find_tuning_angle()` に必要な iSWAPゲートのユニタリ表現を生成しています。
 ```
 c = qibo.Circuit( 4 )                                       # define UiSwap
 c.add( qibo.gates.H( 0 ))                                   # through a set of 
